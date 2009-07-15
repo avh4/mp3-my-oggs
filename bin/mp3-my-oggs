@@ -1,0 +1,5 @@
+#!/bin/bash
+
+file="Test1.ogg"
+oggdec "$file"
+lame -h -m s -b 192 "$(basename "$file" .ogg).wav" "$(basename "$file" .ogg).mp3"
