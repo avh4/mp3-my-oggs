@@ -8,7 +8,7 @@ end
 
 When /^execute `mp3\-my\-oggs 'Test1.ogg'`$/ do
   in_tmp_folder do
-    capture_output_should_succeed "mp3-my-oggs"
+    capture_output_should_succeed "mp3-my-oggs Test1.ogg"
   end
 end
 
@@ -21,7 +21,7 @@ end
 Then /^the file "([^\"]*)" should be an mp3 file$/ do |file|
   in_tmp_folder do
     capture_output_should_succeed "file \"#{file}\""
-    output_of("file \"#{file}\"").should include(": MPEG ADTS, layer III")
+    output_of("file \"#{file}\"").should include(": MP3 file with ID3 version 2.3.0 tag")
   end
 end
 
@@ -38,4 +38,30 @@ Then /^the file "([^\"]*\.mp3)" should have the same audio data as "([^\"]*\.ogg
   end
   mp3length.should_not == 0
   mp3length.should be_close ogglength, 1.0
+end
+
+Given /^an ogg file with metadata TITLE="([^\"]*)"$/ do |arg1|
+  @oggfile = "Tagged1.ogg"
+  FileUtils.cp(test_data_file(@oggfile), tmp_folder_file(@oggfile))
+  @mp3file = "Tagged1.mp3" # The name of the expected output file
+  in_tmp_folder do
+    OggInfo.open(@oggfile) do |info|
+      info.tag["title"].should == arg1
+    end
+  end
+end
+
+When /^I convert the ogg file to mp3$/ do
+  @oggfile.should_not be_nil
+  in_tmp_folder do
+    capture_output_should_succeed "mp3-my-oggs '#{@oggfile}'"
+  end
+end
+
+Then /^the mp3 file should have TITLE="([^\"]*)"$/ do |arg1|
+  in_tmp_folder do
+    Mp3Info.open(@mp3file) do |info|
+      info.tag["title"].should == arg1
+    end
+  end
 end

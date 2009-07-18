@@ -1,5 +1,10 @@
 #!/bin/bash
 
-file="Test1.ogg"
+file="$1"
+mp3file="$(basename "$file" .ogg).mp3"
 oggdec "$file"
-lame -h -m s -b 192 "$(basename "$file" .ogg).wav" "$(basename "$file" .ogg).mp3"
+
+title="`vorbiscomment -l "$file" | grep ^TITLE= | sed s/^[^=]*=//`"
+
+lame -h -m s -b 192 "$(basename "$file" .ogg).wav" "$mp3file" \
+  --id3v2-only --tt "$title"

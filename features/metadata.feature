@@ -7,5 +7,5 @@ Feature: Preserve metadata
     Given mp3-my-oggs is installed
     And an ogg file with metadata TITLE="There's A Lull In My Life"
     When I convert the ogg file to mp3
-    Then the mp3 file should have 
+    Then the mp3 file should have TITLE="There's A Lull In My Life"
   
