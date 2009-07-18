@@ -40,15 +40,10 @@ Then /^the file "([^\"]*\.mp3)" should have the same audio data as "([^\"]*\.ogg
   mp3length.should be_close ogglength, 1.0
 end
 
-Given /^an ogg file with metadata TITLE="([^\"]*)"$/ do |arg1|
+Given /^an ogg file with metadata$/ do
   @oggfile = "Tagged1.ogg"
   FileUtils.cp(test_data_file(@oggfile), tmp_folder_file(@oggfile))
   @mp3file = "Tagged1.mp3" # The name of the expected output file
-  in_tmp_folder do
-    OggInfo.open(@oggfile) do |info|
-      info.tag["title"].should == arg1
-    end
-  end
 end
 
 When /^I convert the ogg file to mp3$/ do
@@ -58,10 +53,12 @@ When /^I convert the ogg file to mp3$/ do
   end
 end
 
-Then /^the mp3 file should have TITLE="([^\"]*)"$/ do |arg1|
+Then /^the mp3 file's title should match the ogg$/ do
   in_tmp_folder do
+    ogg = OggInfo.open(@oggfile)
     Mp3Info.open(@mp3file) do |info|
-      info.tag["title"].should == arg1
+      ogg.tag["title"].should_not be_nil
+      info.tag["title"].should == ogg.tag["title"]
     end
   end
 end

@@ -5,7 +5,7 @@ Feature: Preserve metadata
 
   Scenario: Preserve title
     Given mp3-my-oggs is installed
-    And an ogg file with metadata TITLE="There's A Lull In My Life"
+    And an ogg file with metadata
     When I convert the ogg file to mp3
-    Then the mp3 file should have TITLE="There's A Lull In My Life"
+    Then the mp3 file's title should match the ogg
   
