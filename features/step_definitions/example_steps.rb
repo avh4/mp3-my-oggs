@@ -6,9 +6,9 @@ Given /^an ogg file in the current directory named "([^\"]*)"$/ do |file|
   FileUtils.cp(test_data_file(file), tmp_folder_file(file))
 end
 
-When /^execute `mp3\-my\-oggs 'Test1.ogg'`$/ do
+When /^execute `mp3\-my\-oggs ?(.*)`$/ do |args|
   in_tmp_folder do
-    capture_output_should_succeed "mp3-my-oggs Test1.ogg"
+    capture_output_should_succeed "mp3-my-oggs #{args}"
   end
 end
 

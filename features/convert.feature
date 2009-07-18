@@ -10,4 +10,13 @@ Feature: Convert ogg to mp3
     Then the file "Test1.mp3" should exist
     And the file "Test1.mp3" should be an mp3 file
     And the file "Test1.mp3" should have the same audio data as "Test1.ogg"
+    
+  Scenario: Convert a folder of files
+    Given mp3-my-oggs is installed
+    And an ogg file in the current directory named "Test1.ogg"
+    And an ogg file in the current directory named "Tagged1.ogg"
+    When execute `mp3-my-oggs`
+    Then the file "Test1.mp3" should exist
+    And the file "Tagged1.mp3" should exist
+  
   
