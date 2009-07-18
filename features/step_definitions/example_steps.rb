@@ -53,12 +53,22 @@ When /^I convert the ogg file to mp3$/ do
   end
 end
 
-Then /^the mp3 file's title should match the ogg$/ do
+Then /^the mp3 file's (.*) should match the ogg's (.*)$/ do |mtag, otag|
   in_tmp_folder do
     ogg = OggInfo.open(@oggfile)
     Mp3Info.open(@mp3file) do |info|
-      ogg.tag["title"].should_not be_nil
-      info.tag["title"].should == ogg.tag["title"]
+      ogg.tag[otag].should_not be_nil
+      info.tag[mtag].to_s.should == ogg.tag[otag]
+    end
+  end
+end
+
+Then /^the mp3 file's (.*) should match the ogg$/ do |tag|
+  in_tmp_folder do
+    ogg = OggInfo.open(@oggfile)
+    Mp3Info.open(@mp3file) do |info|
+      ogg.tag[tag].should_not be_nil
+      info.tag[tag].to_s.should == ogg.tag[tag]
     end
   end
 end

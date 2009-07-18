@@ -5,6 +5,12 @@ mp3file="$(basename "$file" .ogg).mp3"
 oggdec "$file"
 
 title="`vorbiscomment -l "$file" | grep ^TITLE= | sed s/^[^=]*=//`"
+artist="`vorbiscomment -l "$file" | grep ^ARTIST= | sed s/^[^=]*=//`"
+album="`vorbiscomment -l "$file" | grep ^ALBUM= | sed s/^[^=]*=//`"
+date="`vorbiscomment -l "$file" | grep ^DATE= | sed s/^[^=]*=//`"
+genre="`vorbiscomment -l "$file" | grep ^GENRE= | sed s/^[^=]*=//`"
+tracknumber="`vorbiscomment -l "$file" | grep ^TRACKNUMBER= | sed s/^[^=]*=//`"
 
 lame -h -m s -b 192 "$(basename "$file" .ogg).wav" "$mp3file" \
-  --id3v2-only --tt "$title"
+  --id3v2-only --tt "$title" --ta "$artist" --tl "$album" --ty "$date" \
+  --tg "$genre" --tn "$tracknumber"

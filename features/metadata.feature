@@ -3,9 +3,15 @@ Feature: Preserve metadata
   As a audiophile
   I want all the metadata to be preserved in in the conversion from mp3 to ogg
 
-  Scenario: Preserve title
+  Scenario: Tagged1.ogg
     Given mp3-my-oggs is installed
     And an ogg file with metadata
     When I convert the ogg file to mp3
     Then the mp3 file's title should match the ogg
+    And the mp3 file's artist should match the ogg
+    And the mp3 file's album should match the ogg
+    And the mp3 file's year should match the ogg's date
+    And the mp3 file's genre_s should match the ogg's genre
+    And the mp3 file's tracknum should match the ogg's tracknumber
+    And the mp3 file's comments should match the ogg's description
   
