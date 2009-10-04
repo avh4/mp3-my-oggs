@@ -14,4 +14,6 @@ Feature: Preserve metadata
     And the mp3 file's genre_s should match the ogg's genre
     And the mp3 file's tracknum should match the ogg's tracknumber
     And the mp3 file's comments should match the ogg's description
+    And the mp3 file's TBPM should match the ogg's bpm
+    And the mp3 file's TPOS should match the ogg's discnumber
   
