@@ -13,10 +13,11 @@ for file in $files; do
   tracknumber="`vorbiscomment -l "$file" | grep ^TRACKNUMBER= | sed s/^[^=]*=//`"
   bpm="`vorbiscomment -l "$file" | grep ^BPM= | sed s/^[^=]*=//`"
   discnumber="`vorbiscomment -l "$file" | grep ^DISCNUMBER= | sed s/^[^=]*=//`"
+  comments="`vorbiscomment -l "$file" | grep ^DESCRIPTION= | sed s/^[^=]*=//`"
   
   lame -h -m s -b 192 "$(basename "$file" .ogg).wav" "$mp3file" \
     --id3v2-only --tt "$title" --ta "$artist" --tl "$album" --ty "$date" \
-    --tg "$genre" --tn "$tracknumber"
+    --tg "$genre" --tn "$tracknumber" --tc "$comments"
   if [ ! -z "$bpm" ]; then
     eyeD3 --bpm "$bpm" "$mp3file"
   fi
